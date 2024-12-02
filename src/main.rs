@@ -1,3 +1,6 @@
+use std::{env, sync::Arc};
+
 fn main() {
-    println!("Hello, world!");
+    let args : Vec<String> = env::args().collect();
+    dbg!(args);
 }
