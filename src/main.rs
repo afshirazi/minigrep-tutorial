@@ -1,12 +1,7 @@
 use std::env;
-use std::error::Error;
-use std::fs;
 use std::process;
 
-struct Config {
-    query: String,
-    file_path: String,
-}
+use minigrep::Config;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -18,7 +13,7 @@ fn main() {
 
     println!("Searching for {}\nin {}.", config.query, config.file_path);
 
-    if let Err(e) = run(config) {
+    if let Err(e) = minigrep::run(config) {
         println!("{}", e);
         process::exit(1);
     }

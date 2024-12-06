@@ -1,5 +1,12 @@
+use std::error::Error;
+use std::fs;
 
-fn run(config: Config) -> Result<(), Box<dyn Error>> {
+pub struct Config {
+    pub query: String,
+    pub file_path: String,
+}
+
+pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let poem = fs::read_to_string(config.file_path)?;
 
     println!("Has content: {poem}");
@@ -8,7 +15,7 @@ fn run(config: Config) -> Result<(), Box<dyn Error>> {
 }
 
 impl Config {
-    fn build(args: &[String]) -> Result<Config, &str> {
+    pub fn build(args: &[String]) -> Result<Config, &str> {
         if args.len() < 3 {
             return Err("Usage: minigrep <query> <file>");
         }
