@@ -22,7 +22,9 @@ impl Config {
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let poem = fs::read_to_string(config.file_path)?;
 
-    println!("Has content: {poem}");
+    for line in search(&config.query, &poem) {
+        println!("{line}");
+    }
 
     Ok(())
 }
