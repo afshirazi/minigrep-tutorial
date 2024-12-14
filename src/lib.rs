@@ -7,13 +7,24 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn build(args: &[String]) -> Result<Config, &str> {
-        if args.len() < 3 {
-            return Err("Usage: minigrep <query> <file>");
-        }
+    pub fn build(mut args: impl Iterator<Item = String>) -> Result<Config, &'static str> {
+        // if args.len() < 3 {
+        //     return Err("Usage: minigrep <query> <file>");
+        // }
         
-        let query = args[1].clone();
-        let file_path = args[2].clone();
+        // let query = args[1].clone();
+        // let file_path = args[2].clone();
+        args.next();
+
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Query not provided.\nUsage: minigrep <query> <file>"),
+        };
+
+        let file_path = match args.next() {
+            Some(arg) => arg,
+            None => return Err("File path not provided.\nUsage: minigrep <query> <file>")
+        };
         
         Ok(Config { query, file_path })
     }
@@ -30,15 +41,19 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 }
 
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
-    let mut res = Vec::new();
+    // let mut res = Vec::new();
 
-    for line in contents.lines() {
-        if line.contains(query) {
-            res.push(line);
-        }
-    }
+    // for line in contents.lines() {
+    //     if line.contains(query) {
+    //         res.push(line);
+    //     }
+    // }
 
-    res
+    // res
+    contents
+    .lines()
+    .filter(|line| line.contains(query))
+    .collect()
 }
 
 #[cfg(test)]
